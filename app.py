@@ -5,8 +5,7 @@ import pdfkit
 
 app = Flask(__name__)
 
-# Configurar pdfkit para usar la versión de wkhtmltopdf en la carpeta bin/
-WKHTMLTOPDF_PATH = os.path.join(os.getcwd(), "bin", "usr", "local", "bin", "wkhtmltopdf")
+WKHTMLTOPDF_PATH = os.path.join(os.getcwd(), "bin", "wkhtmltopdf")
 config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
 
 @app.route('/')
