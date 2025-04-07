@@ -15,6 +15,10 @@ def index():
 @app.route('/generate_pdf', methods=['POST'])
 def generate_pdf():
     try:
+        # Verificar si wkhtmltopdf es ejecutable
+        if not os.access(WKHTMLTOPDF_PATH, os.X_OK):
+            return f"❌ El archivo no tiene permisos de ejecución: {WKHTMLTOPDF_PATH}", 500
+
         # Obtener datos del formulario
         fecha = request.form.get('fecha', '').strip()
         cliente = request.form.get('cliente', '').strip()
@@ -58,7 +62,7 @@ def generate_pdf():
         return send_file(output_pdf_path, as_attachment=True)
 
     except Exception as e:
-        return f"❌ Ocurrió un error al generar el PDF:<br><pre>{str(e)}</pre>", 500
+        return f"❌ Ocurrió un error al generar el PDF:<br>{str(e)}", 500
 
 if __name__ == '__main__':
     app.run(debug=True)
