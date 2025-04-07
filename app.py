@@ -1,3 +1,17 @@
+from flask import Flask, render_template, request, send_file
+import os
+from docx import Document
+import pdfkit
+
+app = Flask(__name__)
+
+WKHTMLTOPDF_PATH = os.path.join(os.getcwd(), "bin", "wkhtmltopdf")
+config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
+
+@app.route('/')
+def index():
+    return render_template('form.html')
+
 @app.route('/generate_pdf', methods=['POST'])
 def generate_pdf():
     try:
@@ -44,4 +58,7 @@ def generate_pdf():
         return send_file(output_pdf_path, as_attachment=True)
 
     except Exception as e:
-        return f"Ocurrió un error: {str(e)}", 500
+        return f"❌ Ocurrió un error al generar el PDF:<br><pre>{str(e)}</pre>", 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
